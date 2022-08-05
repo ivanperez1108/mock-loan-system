@@ -12,14 +12,28 @@ class DB {
      * @return DB\SQL Returns a database connection object
      */
     public static function connectDb(\Base $f3) : DB\SQL {
-        $engine = $f3->get('engine');
-        $host = $f3->get('host');
-        $port = $f3->get('port');
-        $dbname = $f3->get('dbname');
-        $user = $f3->get('user');
-        $password = $f3->get('password');
+        $driver = $host = $port = $dbname = $user = $password = null;
+        
+        if ($f3->exists('driver')) {
+            $driver = $f3->get('driver');
+            $host = $f3->get('host');
+            $port = $f3->get('port');
+            $dbname = $f3->get('dbname');
+            $user = $f3->get('user');
+            $password = $f3->get('password');
+        } else {
+            $dbopts = parse_url(getenv('DATABASE_URL'));
 
-        return new DB\SQL("{$engine}:host={$host};port={$port};dbname={$dbname}", $user, $password);
+            $driver = 'pgsql';
+            $host = $dbopts['host'];
+            $port = $dbopts['port'];
+            $dbname = $dbopts['dbname'];
+            $user = $dbopts['user'];
+            $password = $dbopts['pass'];
+        }
+        
+
+        return new DB\SQL("{$driver}:host={$host};port={$port};dbname={$dbname}", $user, $password);
     }
 
     /**

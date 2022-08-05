@@ -128,9 +128,33 @@ class Loan {
      * @param array $options Array that will contain key value pairs for updating the loan
      */
     public function updateLoan(array $options) {
-        // Update Properties
+        $f3 = \Base::instance();
+        $db = $f3->get('DB');
+        
+        $loan = new DB\SQL\Mapper($db, 'public.loans');
+        $loan->load(array('id=?', $this->id));
 
-        // DB Work
+        // Update Properties
+        foreach ($options as $property => $value) {
+            switch ($property) {
+                case 'amount':
+                    $loan->amount = floatval($value);
+                    break;
+                case 'interest_rate':
+                    $loan->interest_rate = floatval($value);
+                    break;
+                case 'length':
+                    $loan->length = intval($value);
+                    break;
+            }
+        }
+
+        $loan->save();
+
+        $this->amount = $loan->amount;
+        $this->interestRate = $loan->interest_rate;
+        $this->lengthOfLoan = $loan->length;
+        $this->payment = $this->calculateMonthlyPayment();
     }
 
     /**
