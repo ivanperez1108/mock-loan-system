@@ -27,7 +27,7 @@ class DB {
             $driver = 'pgsql';
             $host = $dbopts['host'];
             $port = $dbopts['port'];
-            $dbname = $dbopts['dbname'];
+            $dbname = ltrim($dbopts['path'], '/');
             $user = $dbopts['user'];
             $password = $dbopts['pass'];
         }
