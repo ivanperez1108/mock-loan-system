@@ -16,8 +16,8 @@ $f3->route('GET /',
     }
 );
 
-$f3->route('GET|POST /create-loan', 'RouteHandler->createLoan');
-$f3->route('GET|POST /get-loan', 'RouteHandler->getLoan');
-$f3->route('GET|POST /update-loan', 'RouteHandler->updateLoan');
+$f3->route('POST /create-loan', 'RouteHandler->createLoan');
+$f3->route('GET /get-loan', 'RouteHandler->getLoan');
+$f3->route('POST /update-loan', 'RouteHandler->updateLoan');
 
 $f3->run();
